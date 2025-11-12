@@ -51,7 +51,18 @@ echo.
 echo ==================================
 echo Building with MinGW...
 echo ==================================
-call build_nasm.bat
+echo.
+echo Detecting MinGW architecture...
+gcc -dumpmachine | findstr /C:"x86_64" >nul
+if %ERRORLEVEL% EQU 0 (
+    echo Detected: 64-bit MinGW
+    echo Using 64-bit build script...
+    call build_nasm_64bit.bat
+) else (
+    echo Detected: 32-bit MinGW  
+    echo Using 32-bit build script...
+    call build_nasm.bat
+)
 goto :end
 
 :build_with_msvc
