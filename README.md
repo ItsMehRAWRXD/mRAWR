@@ -30,17 +30,42 @@ error: instruction expected, found 'proc'
 
 ## 🚀 Quick Start
 
-### Using NASM (Recommended)
+### ⚠️ IMPORTANT: You Need Build Tools First!
 
-**On Windows:**
+If you got the error: `gcc: The term 'gcc' is not recognized`
+
+**See: `INSTALL_TOOLS_WINDOWS.md` for detailed installation instructions**
+
+### Quick Install (Windows)
+
+**Option 1: Chocolatey (Easiest)**
+```powershell
+# In PowerShell as Administrator:
+choco install mingw nasm -y
+# Then restart PowerShell and run:
+build_auto.bat
+```
+
+**Option 2: Use Visual Studio** (if already installed)
+- Open "Developer Command Prompt for VS"
+- Navigate to folder
+- Run: `build_msvc.bat`
+
+### Building the Code
+
+**Automatic (Detects available tools):**
+```batch
+build_auto.bat
+```
+
+**Using MinGW:**
 ```batch
 build_nasm.bat
 ```
 
-**On Linux/macOS:**
-```bash
-chmod +x build_nasm.sh
-./build_nasm.sh
+**Using Microsoft Visual C++:**
+```batch
+build_msvc.bat
 ```
 
 **Manual Assembly:**
@@ -48,11 +73,11 @@ chmod +x build_nasm.sh
 # Assemble
 nasm -f win32 MASM_2035_Weaponized_Complete_NASM.asm -o output.obj
 
-# Link (Windows)
+# Link (Windows with MinGW)
 gcc -m32 output.obj -o output.exe -lkernel32 -luser32 -ladvapi32 -lwininet -lcrypt32
 
-# Link (Linux with MinGW)
-i686-w64-mingw32-gcc output.obj -o output.exe -lkernel32 -luser32 -ladvapi32 -lwininet -lcrypt32
+# Link (Windows with MSVC)
+link /SUBSYSTEM:CONSOLE /OUT:output.exe output.obj kernel32.lib user32.lib advapi32.lib wininet.lib crypt32.lib
 ```
 
 ### Using MASM (Windows Only)
